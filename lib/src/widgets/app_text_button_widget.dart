@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 class AppTextButtonWidget extends StatelessWidget {
   final VoidCallback onPressed;
   final String title;
+  final TextStyle? textStyle;
 
   const AppTextButtonWidget({
     required this.onPressed,
     required this.title,
+    this.textStyle,
     super.key,
   });
 
@@ -15,9 +17,13 @@ class AppTextButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed,
+      style: TextButton.styleFrom(
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        padding: EdgeInsets.zero,
+      ),
       child: Text(
         title,
-        style: const TextStyle().bold,
+        style: textStyle ?? const TextStyle().regular,
       ),
     );
   }

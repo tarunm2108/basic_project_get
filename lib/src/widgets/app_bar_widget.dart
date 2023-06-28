@@ -5,11 +5,13 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final List<Widget>? actions;
   final Widget? backButtonWidget;
+  final bool? centerTitle;
 
   const AppBarWidget({
     this.title,
     this.actions,
     this.backButtonWidget,
+    this.centerTitle,
     super.key,
   });
 
@@ -18,9 +20,15 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       automaticallyImplyLeading: true,
       leading: backButtonWidget,
-      title: Text(title ?? '', style: const TextStyle().bold),
+      titleSpacing: 0,
+      title: Text(
+        title ?? '',
+        style: const TextStyle().regular.copyWith(
+              fontSize: 21,
+            ),
+      ),
       actions: actions,
-      centerTitle: true,
+      centerTitle: centerTitle ?? true,
     );
   }
 
