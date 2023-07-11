@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class Utility {
 
@@ -32,6 +33,16 @@ class Utility {
        openAppSettings();
        return false;
      }
+   }
+ }
+
+ static Future<bool> checkNetwork() async {
+   var connectivityResult = await Connectivity().checkConnectivity();
+   if (connectivityResult == ConnectivityResult.mobile ||
+       connectivityResult == ConnectivityResult.wifi) {
+     return true;
+   } else {
+     return false;
    }
  }
 }
