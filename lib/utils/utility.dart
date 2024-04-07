@@ -38,8 +38,8 @@ class Utility {
 
  static Future<bool> checkNetwork() async {
    var connectivityResult = await Connectivity().checkConnectivity();
-   if (connectivityResult == ConnectivityResult.mobile ||
-       connectivityResult == ConnectivityResult.wifi) {
+   if (connectivityResult.contains(ConnectivityResult.mobile) ||
+       connectivityResult.contains(ConnectivityResult.wifi)) {
      return true;
    } else {
      return false;

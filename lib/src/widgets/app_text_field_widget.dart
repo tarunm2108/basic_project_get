@@ -17,7 +17,7 @@ class AppTextFieldWidget extends StatelessWidget {
   final VoidCallback? onTap;
 
   const AppTextFieldWidget({
-    Key? key,
+    super.key,
     required this.controller,
     this.textStyle,
     this.formatters,
@@ -30,7 +30,7 @@ class AppTextFieldWidget extends StatelessWidget {
     this.textCapitalization,
     this.readOnly,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

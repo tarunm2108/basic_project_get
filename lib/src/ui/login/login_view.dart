@@ -1,19 +1,15 @@
-import 'package:basic_code_getx/app_locale/lang_model.dart';
 import 'package:basic_code_getx/app_locale/locale_string/lang_key.dart';
-import 'package:basic_code_getx/app_route/app_routes.dart';
 import 'package:basic_code_getx/src/extensions/space_extension.dart';
 import 'package:basic_code_getx/src/ui/login/login_controller.dart';
 import 'package:basic_code_getx/src/widgets/app_bar_widget.dart';
 import 'package:basic_code_getx/src/widgets/app_button_widget.dart';
 import 'package:basic_code_getx/src/widgets/app_scaffold.dart';
 import 'package:basic_code_getx/src/widgets/app_text_field_widget.dart';
-import 'package:basic_code_getx/src/widgets/dropdown/dropdown_button2.dart';
-import 'package:basic_code_getx/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginView extends StatelessWidget {
-  const LoginView({Key? key}) : super(key: key);
+  const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,23 +50,6 @@ class LoginView extends StatelessWidget {
                   title: LangKey.login.tr,
                   showLoader: controller.setBusy,
                 ),
-                40.toSpace,
-                DropdownButton2<LangModel>(
-                  items: List.generate(
-                    languages.length,
-                    (index) => DropdownMenuItem(
-                      value: languages[index],
-                      child: Text(languages[index].title),
-                    ),
-                  ),
-                  onChanged: (value) {
-                    controller.selectedLang = value!;
-                    Utility.changeLanguage(value.code);
-                  },
-                  value: controller.selectedLang,
-                  underline: const SizedBox.shrink(),
-                ),
-                20.toSpace,
               ],
             ),
           ),

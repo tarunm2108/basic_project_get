@@ -1,46 +1,50 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'package:basic_code_getx/utils/logger.dart';
+import 'package:dio/dio.dart';
 
 class ApiClient {
   static final ApiClient instance = ApiClient._internal();
+  static const String baseUrl = "";
+  final _dio = Dio();
 
-  factory ApiClient() {
-    return instance;
-  }
+  factory ApiClient() => instance;
 
   ApiClient._internal();
 
-  static const String baseUrl = '';
+  void init(){
+    _dio.options.baseUrl = baseUrl;
+    _dio.options.headers = {};
+  }
 
-  Future<http.Response> getMethod({
+  Future<Response> getMethod({
     required String method,
     Map<String, String>? header,
   }) async {
     final uri = Uri.parse("$baseUrl$method");
-    debugPrint('Request url: ${uri.toString()}');
-    final response = await http.get(Uri.parse("$baseUrl$method"));
-    debugPrint('Response body: ${response.body}');
+    Logger.instance.printInfo('Request url: ${uri.toString()}');
+    final response = await _dio.get(uri.toString());
+    Logger.instance.printInfo('Response body: ${jsonEncode(response.data)}');
     return response;
   }
 
-  Future<http.Response> postMethod({
+  Future<Response> postMethod({
     required String method,
     required Map<String, String> body,
     Map<String, String>? header,
   }) async {
     final uri = Uri.parse("$baseUrl$method");
-    debugPrint('Request body: ${body.toString()}');
-    debugPrint('Request url: ${uri.toString()}');
-    final response = await http.post(
-      Uri.parse("$baseUrl$method"),
-      body: body,
-      headers: header,
+    Logger.instance.printInfo('Request url: ${uri.toString()}');
+    Logger.instance.printInfo('Request body: $body');
+    final response = await _dio.post(
+      uri.toString(),
+      data: body,
     );
-    debugPrint('Response body: ${response.body}');
+    Logger.instance.printInfo('Response body: ${jsonEncode(response.data)}');
     return response;
   }
 
-  Future<http.Response> postMultiPartMethod({
+  /*Future<http.Response> postMultiPartMethod({
     required String method,
     required Map<String, String> body,
     required List<http.MultipartFile> files,
@@ -57,5 +61,5 @@ class ApiClient {
     final result = await http.Response.fromStream(response);
     debugPrint('Response body: ${result.body}');
     return result;
-  }
+  }*/
 }

@@ -11,17 +11,14 @@ class AppScaffold extends StatelessWidget {
     this.body,
     this.noneClickable,
     this.floatingAction,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        return noneClickable ?? false
-            ? Future.value(false)
-            : Future.value(true);
-      },
+    return PopScope(
+      onPopInvoked: (value) {},
+      canPop: false,
       child: AbsorbPointer(
         absorbing: noneClickable ?? false,
         child: Stack(
