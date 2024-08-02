@@ -1,6 +1,6 @@
+import 'package:basic_code_getx/app_const/constants.dart';
 import 'package:basic_code_getx/app_locale/app_translation.dart';
 import 'package:basic_code_getx/app_route/app_routes.dart';
-import 'package:basic_code_getx/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
