@@ -2,8 +2,8 @@ import 'package:basic_code_getx/app_locale/lang_model.dart';
 import 'package:get/get.dart';
 
 class AppBaseController extends GetxController {
-  bool _setBusy = false;
-  LangModel _selectedLang = languages.first;
+  final RxBool _setBusy = false.obs;
+  LangModel selectedLang = languages.first;
 
   void showToast({required String? msg}) {
     if (msg?.isNotEmpty ?? false) {
@@ -16,17 +16,10 @@ class AppBaseController extends GetxController {
     }
   }
 
-  bool get setBusy => _setBusy;
+  bool get isBusy => _setBusy.value;
 
   set setBusy(bool value) {
-    _setBusy = value;
-    update();
-  }
-
-  LangModel get selectedLang => _selectedLang;
-
-  set selectedLang(LangModel value) {
-    _selectedLang = value;
+    _setBusy.value = value;
     update();
   }
 }

@@ -16,7 +16,7 @@ class LoginView extends StatelessWidget {
     return GetBuilder<LoginController>(
       builder: (controller) {
         return AppScaffold(
-          noneClickable: controller.setBusy,
+          isBusy: controller.isBusy,
           appBar: AppBarWidget(title: LangKey.login.tr),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
@@ -48,7 +48,7 @@ class LoginView extends StatelessWidget {
                 AppButtonWidget(
                   onPressed: () => controller.loginTap(),
                   title: LangKey.login.tr,
-                  showLoader: controller.setBusy,
+                  showLoader: controller.isBusy,
                 ),
               ],
             ),

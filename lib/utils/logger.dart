@@ -1,15 +1,20 @@
-import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 
 class Logger {
   static final Logger instance = Logger._internal();
   Logger._internal();
   factory Logger() => instance;
 
-  void printInfo(dynamic data){
+  void printLog(dynamic data){
     if(kDebugMode){
-      log("===> $data");
+      Get.log("===> $data");
+    }
+  }
+
+  void printError(dynamic data){
+    if(kDebugMode){
+      Get.log("===>Error $data",isError: true);
     }
   }
 }

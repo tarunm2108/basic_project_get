@@ -1,4 +1,4 @@
-import 'package:basic_code_getx/app_const/constants.dart';
+import 'package:basic_code_getx/app_const/app_strings.dart';
 import 'package:basic_code_getx/app_locale/app_translation.dart';
 import 'package:basic_code_getx/app_route/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: Constants.appName,
+      title: AppStrings.appName,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,

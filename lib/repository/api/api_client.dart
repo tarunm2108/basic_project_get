@@ -1,65 +1,195 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:basic_code_getx/utils/logger.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
+import 'package:flutter/foundation.dart';
 
-class ApiClient {
-  static final ApiClient instance = ApiClient._internal();
-  static const String baseUrl = "";
-  final _dio = Dio();
+class ApiService {
+  static final ApiService _instance = ApiService._internal();
 
-  factory ApiClient() => instance;
+  static ApiService get instance => _instance;
 
-  ApiClient._internal();
+  String baseUrl = "https://jamesbrookit.com/lealy-app/public/api/";
+  final Dio _dio = Dio();
+  static const connectionTimeOut = Duration(seconds: 10);
+  static const receiveTimeOut = Duration(seconds: 30);
 
-  void init(){
+  ApiService._internal() {
+    if (!kIsWeb) {
+      _dio.httpClientAdapter = IOHttpClientAdapter(
+        createHttpClient: () {
+          final HttpClient client =
+          HttpClient(context: SecurityContext(withTrustedRoots: false));
+          client.badCertificateCallback =
+          ((X509Certificate cert, String host, int port) => true);
+          return client;
+        },
+      );
+    }
     _dio.options.baseUrl = baseUrl;
-    _dio.options.headers = {};
+    _dio.options.connectTimeout = connectionTimeOut;
+    _dio.options.receiveTimeout = receiveTimeOut;
+    // _dio.options.headers = {
+    //   'user-agent': 'dio',
+    //   'Accept': 'application/json',
+    //   'Content-Type': 'application/json',
+    // };
+    // _dio.options.validateStatus = (status) => true;
+    _dio.options.followRedirects = false;
   }
 
-  Future<Response> getMethod({
-    required String method,
-    Map<String, String>? header,
-  }) async {
-    final uri = Uri.parse("$baseUrl$method");
-    Logger.instance.printInfo('Request url: ${uri.toString()}');
-    final response = await _dio.get(uri.toString());
-    Logger.instance.printInfo('Response body: ${jsonEncode(response.data)}');
-    return response;
+  Future<Response> get(String path, {Map<String, dynamic>? requestData}) async {
+    try {
+      Logger.instance.printLog("url => $baseUrl$path");
+      Logger.instance.printLog("Header => ${_dio.options.headers}");
+      if (requestData != null) {
+        Logger.instance.printLog("get request => $requestData");
+      }
+      final response = await _dio.get(path, queryParameters: requestData);
+      Logger.instance.printLog("$path ${jsonEncode(response.data)}");
+      return response;
+    } on DioException catch (e) {
+      Logger.instance.printError("$path $e");
+      return e.response!;
+    }
   }
 
-  Future<Response> postMethod({
-    required String method,
-    required Map<String, String> body,
-    Map<String, String>? header,
-  }) async {
-    final uri = Uri.parse("$baseUrl$method");
-    Logger.instance.printInfo('Request url: ${uri.toString()}');
-    Logger.instance.printInfo('Request body: $body');
-    final response = await _dio.post(
-      uri.toString(),
-      data: body,
-    );
-    Logger.instance.printInfo('Response body: ${jsonEncode(response.data)}');
-    return response;
+  Future<Response> getWithAuth(String path,
+      {Map<String, dynamic>? requestData}) async {
+    try {
+      // _dio.options.headers = {
+      //    'user-agent': 'dio',
+      //    'Accept': 'application/json',
+      //    'Content-Type': 'application/json',
+      //    'Authorization': token,
+      //  };
+      Logger.instance.printLog("url => $baseUrl$path");
+      Logger.instance.printLog("Header => ${_dio.options.headers}");
+      if (requestData != null) {
+        Logger.instance.printLog("get auth request => $requestData");
+      }
+      final response = await _dio.get(path, queryParameters: requestData);
+      Logger.instance.printLog("$path ${jsonEncode(response.data)}");
+      return response;
+    } on DioException catch (e) {
+      Logger.instance.printError("$path $e");
+      return e.response!;
+    }
   }
 
-  /*Future<http.Response> postMultiPartMethod({
-    required String method,
-    required Map<String, String> body,
-    required List<http.MultipartFile> files,
-    Map<String, String>? header,
-  }) async {
-    final uri = Uri.parse("$baseUrl$method");
-    debugPrint('Request body: ${body.toString()}');
-    debugPrint('Request url: ${uri.toString()}');
-    var request = http.MultipartRequest('POST', uri);
-    request.files.addAll(files);
-    request.fields.addAll(body);
-    request.headers.addAll(header ?? {});
-    final response = await request.send();
-    final result = await http.Response.fromStream(response);
-    debugPrint('Response body: ${result.body}');
-    return result;
-  }*/
+  Future<Response> post(String path, {dynamic data}) async {
+    try {
+      Logger.instance.printLog("url => $baseUrl$path");
+      Logger.instance.printLog("Header => ${_dio.options.headers}");
+      if (data != null) {
+        Logger.instance.printLog("post request => $data");
+      }
+      final response = await _dio.post(path, data: data);
+      Logger.instance.printLog("$path ${jsonEncode(response.data)}");
+      return response;
+    } on DioException catch (e) {
+      Logger.instance.printError("$path $e");
+      return e.response!;
+    }
+  }
+
+  Future<Response> postWithAuth(String path, {dynamic data,bool? withoutRefresh}) async {
+    try {
+      // _dio.options.headers = {
+      //    'user-agent': 'dio',
+      //    'Accept': 'application/json',
+      //    'Content-Type': 'application/json',
+      //    'Authorization': token,
+      //  };
+      Logger.instance.printLog("url => $baseUrl$path");
+      Logger.instance.printLog("Header => ${_dio.options.headers}");
+      if (data != null) {
+        Logger.instance.printLog("post auth request => $data");
+      }
+      final response = await _dio.post(path, data: data);
+      Logger.instance.printLog("$path ${jsonEncode(response.data)}");
+      return response;
+    } on DioException catch (e) {
+      Logger.instance.printError("$path $e");
+      return e.response!;
+    }
+  }
+
+  Future<Response> put(String path, {dynamic data}) async {
+    try {
+      Logger.instance.printLog("url => $baseUrl$path");
+      Logger.instance.printLog("Header => ${_dio.options.headers}");
+      if (data != null) {
+        Logger.instance.printLog("put request => $data");
+      }
+      final response = await _dio.put(path, data: data);
+      Logger.instance.printLog("$path ${jsonEncode(response.data)}");
+      return response;
+    } on DioException catch (e) {
+      Logger.instance.printError("$path $e");
+      return e.response!;
+    }
+  }
+
+  Future<Response> putWithAuth(String path, {dynamic data}) async {
+    try {
+      // _dio.options.headers = {
+      //    'user-agent': 'dio',
+      //    'Accept': 'application/json',
+      //    'Content-Type': 'application/json',
+      //    'Authorization': token,
+      //  };
+      Logger.instance.printLog("url => $baseUrl$path");
+      Logger.instance.printLog("Header => ${_dio.options.headers}");
+      if (data != null) {
+        Logger.instance.printLog("putAuth request => $data");
+      }
+      final response = await _dio.put(path, data: data);
+      Logger.instance.printLog("$path ${jsonEncode(response.data)}");
+      return response;
+    } on DioException catch (e) {
+      Logger.instance.printError("$path $e");
+      return e.response!;
+    }
+  }
+
+  Future<Response> delete(String path, {dynamic data}) async {
+    try {
+      Logger.instance.printLog("url => $baseUrl$path");
+      Logger.instance.printLog("Header => ${_dio.options.headers}");
+      if (data != null) {
+        Logger.instance.printLog("delete request => $data");
+      }
+      final response = await _dio.delete(path, data: data);
+      Logger.instance.printLog("$path ${jsonEncode(response.data)}");
+      return response;
+    } on DioException catch (e) {
+      Logger.instance.printError("$path $e");
+      return e.response!;
+    }
+  }
+
+  Future<Response> deleteWithAuth(String path, {dynamic data}) async {
+    try {
+      // _dio.options.headers = {
+      //    'user-agent': 'dio',
+      //    'Accept': 'application/json',
+      //    'Content-Type': 'application/json',
+      //    'Authorization': token,
+      //  };
+      Logger.instance.printLog("url => $baseUrl$path");
+      Logger.instance.printLog("Header => ${_dio.options.headers}");
+      if (data != null) {
+        Logger.instance.printLog("deleteAuth request => $data");
+      }
+      final response = await _dio.delete(path, data: data);
+      Logger.instance.printLog("$path ${jsonEncode(response.data)}");
+      return response;
+    } on DioException catch (e) {
+      Logger.instance.printError("$path $e");
+      return e.response!;
+    }
+  }
 }

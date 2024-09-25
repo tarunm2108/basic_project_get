@@ -10,11 +10,14 @@ class AppTextFieldWidget extends StatelessWidget {
   final TextInputType? inputType;
   final TextInputAction? inputAction;
   final Widget? suffix;
+  final Widget? prefix;
   final bool? obscureText;
   final bool? readOnly;
   final FocusNode? node;
   final TextCapitalization? textCapitalization;
   final VoidCallback? onTap;
+  final InputDecoration? decoration;
+  final String? Function(String? value)? validator;
 
   const AppTextFieldWidget({
     super.key,
@@ -25,19 +28,26 @@ class AppTextFieldWidget extends StatelessWidget {
     this.inputType,
     this.inputAction,
     this.suffix,
+    this.prefix,
     this.node,
     this.obscureText,
     this.textCapitalization,
     this.readOnly,
     this.onTap,
+    this.decoration,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller,
       onTap: onTap,
-      style: textStyle,
+      style: textStyle ??
+          const TextStyle().regular.copyWith(
+                color: Colors.black,
+                fontSize: 18,
+              ),
       keyboardType: inputType,
       focusNode: node,
       readOnly: readOnly ?? false,
@@ -45,18 +55,35 @@ class AppTextFieldWidget extends StatelessWidget {
       inputFormatters: formatters,
       obscureText: obscureText ?? false,
       textCapitalization: textCapitalization ?? TextCapitalization.none,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5),
-            borderSide: const BorderSide(color: Colors.black54),
+      decoration: decoration ??
+          InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: const BorderSide(width: 1, color: Colors.black),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: const BorderSide(width: 1, color: Colors.black),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: const BorderSide(width: 1, color: Colors.black),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: const BorderSide(width: 1, color: Colors.red),
+            ),
+            isDense: true,
+            hintText: hintText,
+            contentPadding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+            hintStyle: const TextStyle().regular.copyWith(
+                  color: Colors.black,
+                  fontSize: 18,
+                ),
+            suffixIcon: suffix,
+            prefixIcon: prefix,
           ),
-          isDense: true,
-          hintText: hintText,
-          hintStyle: const TextStyle().regular.copyWith(
-            color: Colors.black45,
-            fontSize: 15,
-          ),
-          suffixIcon: suffix),
+      validator: validator,
     );
   }
 }
