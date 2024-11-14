@@ -1,5 +1,5 @@
 import 'package:basic_code_getx/src/extensions/text_style_extension.dart';
-import 'package:basic_code_getx/src/widgets/circular_loader_widget.dart';
+import 'package:basic_code_getx/src/widgets/loader_widget.dart';
 import 'package:flutter/material.dart';
 
 class AppButtonWidget extends StatelessWidget {
@@ -17,7 +17,7 @@ class AppButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return showLoader ?? false
-        ? const CircularLoaderWidget()
+        ? const LoaderWidget()
         : ElevatedButton(
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
