@@ -11,7 +11,7 @@ class ApiService {
 
   static ApiService get instance => _instance;
 
-  String baseUrl = "https://jamesbrookit.com/lealy-app/public/api/";
+  String baseUrl = "";
   final Dio _dio = Dio();
   static const connectionTimeOut = Duration(seconds: 10);
   static const receiveTimeOut = Duration(seconds: 30);

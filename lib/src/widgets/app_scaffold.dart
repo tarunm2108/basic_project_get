@@ -1,10 +1,9 @@
-import 'package:basic_code_getx/services/navigation.dart';
 import 'package:basic_code_getx/src/widgets/loader_widget.dart';
 import 'package:flutter/material.dart';
 
 class AppScaffold extends StatelessWidget {
   final PreferredSizeWidget? appBar;
-  final Widget? body;
+  final Widget body;
   final Widget? floatingAction;
   final Widget? bottomWidget;
   final bool? isBusy;
@@ -12,10 +11,11 @@ class AppScaffold extends StatelessWidget {
   final bool? extendBodyBehindAppBar;
   final bool? canPop;
   final VoidCallback? onBack;
+  final Color? bgColor;
 
   const AppScaffold({
+    required this.body,
     this.appBar,
-    this.body,
     this.isBusy,
     this.floatingAction,
     this.resizeToAvoidBottomInset,
@@ -23,6 +23,7 @@ class AppScaffold extends StatelessWidget {
     this.bottomWidget,
     this.canPop,
     this.onBack,
+    this.bgColor,
     super.key,
   });
 
@@ -33,8 +34,6 @@ class AppScaffold extends StatelessWidget {
         if (!value) {
           if (onBack != null) {
             onBack!();
-          } else {
-            Navigation.instance.pop();
           }
         }
       },
@@ -43,16 +42,18 @@ class AppScaffold extends StatelessWidget {
         absorbing: isBusy ?? false,
         child: Stack(
           children: [
-            Scaffold(
-              appBar: appBar,
-              body: body,
-              backgroundColor: Colors.white,
-              bottomNavigationBar: bottomWidget,
-              floatingActionButton: floatingAction,
-              extendBodyBehindAppBar: extendBodyBehindAppBar ?? false,
-              resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+            Positioned.fill(
+              child: Scaffold(
+                appBar: appBar,
+                body: SafeArea(child: body),
+                backgroundColor: bgColor ?? Colors.white,
+                bottomNavigationBar: bottomWidget,
+                floatingActionButton: floatingAction,
+                extendBodyBehindAppBar: extendBodyBehindAppBar ?? false,
+                resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+              ),
             ),
-            Positioned(
+            Positioned.fill(
               child: isBusy ?? false
                   ? Container(
                       color: Colors.black.withOpacity(0.3),
