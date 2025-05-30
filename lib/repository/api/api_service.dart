@@ -21,9 +21,9 @@ class ApiService {
       _dio.httpClientAdapter = IOHttpClientAdapter(
         createHttpClient: () {
           final HttpClient client =
-          HttpClient(context: SecurityContext(withTrustedRoots: false));
+              HttpClient(context: SecurityContext(withTrustedRoots: false));
           client.badCertificateCallback =
-          ((X509Certificate cert, String host, int port) => true);
+              ((X509Certificate cert, String host, int port) => true);
           return client;
         },
       );
@@ -31,24 +31,49 @@ class ApiService {
     _dio.options.baseUrl = baseUrl;
     _dio.options.connectTimeout = connectionTimeOut;
     _dio.options.receiveTimeout = receiveTimeOut;
-    // _dio.options.headers = {
-    //   'user-agent': 'dio',
-    //   'Accept': 'application/json',
-    //   'Content-Type': 'application/json',
-    // };
-    // _dio.options.validateStatus = (status) => true;
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          Logger.instance
+              .printLog("${options.method.toUpperCase()} :- ${options.uri}");
+          Logger.instance.printLog("Header => ${options.headers}");
+          Logger.instance.printLog("Request => ${options.data}");
+          return handler.next(options);
+        },
+        onResponse: (response, handler) {
+          Logger.instance.printLog(
+              "${response.requestOptions.path} ${jsonEncode(response.data)}");
+          return handler.next(response);
+        },
+        onError: (DioException e, handler) {
+          // Handle errors globally
+          return handler.next(e);
+        },
+      ),
+    );
     _dio.options.followRedirects = false;
+  }
+
+  Map<String, String> getHeader({bool isAuth = false}) {
+    String token = 'Bearer';
+    return isAuth
+        ? {
+            'user-agent': 'dio',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': token,
+          }
+        : {
+            'user-agent': 'dio',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          };
   }
 
   Future<Response> get(String path, {Map<String, dynamic>? requestData}) async {
     try {
-      Logger.instance.printLog("url => $baseUrl$path");
-      Logger.instance.printLog("Header => ${_dio.options.headers}");
-      if (requestData != null) {
-        Logger.instance.printLog("get request => $requestData");
-      }
+      _dio.options.headers = getHeader(isAuth: true);
       final response = await _dio.get(path, queryParameters: requestData);
-      Logger.instance.printLog("$path ${jsonEncode(response.data)}");
       return response;
     } on DioException catch (e) {
       Logger.instance.printError("$path $e");
@@ -59,19 +84,8 @@ class ApiService {
   Future<Response> getWithAuth(String path,
       {Map<String, dynamic>? requestData}) async {
     try {
-      // _dio.options.headers = {
-      //    'user-agent': 'dio',
-      //    'Accept': 'application/json',
-      //    'Content-Type': 'application/json',
-      //    'Authorization': token,
-      //  };
-      Logger.instance.printLog("url => $baseUrl$path");
-      Logger.instance.printLog("Header => ${_dio.options.headers}");
-      if (requestData != null) {
-        Logger.instance.printLog("get auth request => $requestData");
-      }
+      _dio.options.headers = getHeader();
       final response = await _dio.get(path, queryParameters: requestData);
-      Logger.instance.printLog("$path ${jsonEncode(response.data)}");
       return response;
     } on DioException catch (e) {
       Logger.instance.printError("$path $e");
@@ -81,13 +95,8 @@ class ApiService {
 
   Future<Response> post(String path, {dynamic data}) async {
     try {
-      Logger.instance.printLog("url => $baseUrl$path");
-      Logger.instance.printLog("Header => ${_dio.options.headers}");
-      if (data != null) {
-        Logger.instance.printLog("post request => $data");
-      }
+      _dio.options.headers = getHeader(isAuth: true);
       final response = await _dio.post(path, data: data);
-      Logger.instance.printLog("$path ${jsonEncode(response.data)}");
       return response;
     } on DioException catch (e) {
       Logger.instance.printError("$path $e");
@@ -95,21 +104,11 @@ class ApiService {
     }
   }
 
-  Future<Response> postWithAuth(String path, {dynamic data,bool? withoutRefresh}) async {
+  Future<Response> postWithAuth(String path,
+      {dynamic data, bool? withoutRefresh}) async {
     try {
-      // _dio.options.headers = {
-      //    'user-agent': 'dio',
-      //    'Accept': 'application/json',
-      //    'Content-Type': 'application/json',
-      //    'Authorization': token,
-      //  };
-      Logger.instance.printLog("url => $baseUrl$path");
-      Logger.instance.printLog("Header => ${_dio.options.headers}");
-      if (data != null) {
-        Logger.instance.printLog("post auth request => $data");
-      }
+      _dio.options.headers = getHeader();
       final response = await _dio.post(path, data: data);
-      Logger.instance.printLog("$path ${jsonEncode(response.data)}");
       return response;
     } on DioException catch (e) {
       Logger.instance.printError("$path $e");
@@ -119,13 +118,8 @@ class ApiService {
 
   Future<Response> put(String path, {dynamic data}) async {
     try {
-      Logger.instance.printLog("url => $baseUrl$path");
-      Logger.instance.printLog("Header => ${_dio.options.headers}");
-      if (data != null) {
-        Logger.instance.printLog("put request => $data");
-      }
+      _dio.options.headers = getHeader(isAuth: true);
       final response = await _dio.put(path, data: data);
-      Logger.instance.printLog("$path ${jsonEncode(response.data)}");
       return response;
     } on DioException catch (e) {
       Logger.instance.printError("$path $e");
@@ -135,19 +129,8 @@ class ApiService {
 
   Future<Response> putWithAuth(String path, {dynamic data}) async {
     try {
-      // _dio.options.headers = {
-      //    'user-agent': 'dio',
-      //    'Accept': 'application/json',
-      //    'Content-Type': 'application/json',
-      //    'Authorization': token,
-      //  };
-      Logger.instance.printLog("url => $baseUrl$path");
-      Logger.instance.printLog("Header => ${_dio.options.headers}");
-      if (data != null) {
-        Logger.instance.printLog("putAuth request => $data");
-      }
+      _dio.options.headers = getHeader();
       final response = await _dio.put(path, data: data);
-      Logger.instance.printLog("$path ${jsonEncode(response.data)}");
       return response;
     } on DioException catch (e) {
       Logger.instance.printError("$path $e");
@@ -157,11 +140,7 @@ class ApiService {
 
   Future<Response> delete(String path, {dynamic data}) async {
     try {
-      Logger.instance.printLog("url => $baseUrl$path");
-      Logger.instance.printLog("Header => ${_dio.options.headers}");
-      if (data != null) {
-        Logger.instance.printLog("delete request => $data");
-      }
+      _dio.options.headers = getHeader(isAuth: true);
       final response = await _dio.delete(path, data: data);
       Logger.instance.printLog("$path ${jsonEncode(response.data)}");
       return response;
@@ -173,19 +152,8 @@ class ApiService {
 
   Future<Response> deleteWithAuth(String path, {dynamic data}) async {
     try {
-      // _dio.options.headers = {
-      //    'user-agent': 'dio',
-      //    'Accept': 'application/json',
-      //    'Content-Type': 'application/json',
-      //    'Authorization': token,
-      //  };
-      Logger.instance.printLog("url => $baseUrl$path");
-      Logger.instance.printLog("Header => ${_dio.options.headers}");
-      if (data != null) {
-        Logger.instance.printLog("deleteAuth request => $data");
-      }
+      _dio.options.headers = getHeader();
       final response = await _dio.delete(path, data: data);
-      Logger.instance.printLog("$path ${jsonEncode(response.data)}");
       return response;
     } on DioException catch (e) {
       Logger.instance.printError("$path $e");
