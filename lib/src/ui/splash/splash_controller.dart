@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 class SplashController extends AppBaseController {
   @override
   void onReady() {
-    Logger.instance.printLog("base ${AppConfig.instance.baseUrl}");
+    Logger.instance.printLog("base url ${AppConfig.instance.baseUrl}");
     Future.delayed(const Duration(seconds: 2))
         .whenComplete(() => Get.offAllNamed(AppRoutes.login));
   }

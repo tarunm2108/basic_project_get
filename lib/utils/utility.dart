@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:intl/intl.dart';
 
 class Utility {
@@ -40,17 +39,6 @@ class Utility {
      }
    }
  }
-
- static Future<bool> checkNetwork() async {
-   var connectivityResult = await Connectivity().checkConnectivity();
-   if (connectivityResult.contains(ConnectivityResult.mobile) ||
-       connectivityResult.contains(ConnectivityResult.wifi)) {
-     return true;
-   } else {
-     return false;
-   }
- }
-
 
  static String getTodayDate(String format) {
    return DateFormat(format).format(DateTime.now());

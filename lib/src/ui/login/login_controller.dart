@@ -7,10 +7,10 @@ class LoginController extends AppBaseController {
   final passCtrl = TextEditingController();
   final emailNode = FocusNode();
   final passNode = FocusNode();
-  bool _hasHidePass = true;
+  RxBool hasHidePass = true.obs;
 
   void hideShowPass() {
-    hasHidePass = !hasHidePass;
+    hasHidePass.value = !hasHidePass.value;
   }
 
   Future<void> loginTap() async {
@@ -29,10 +29,4 @@ class LoginController extends AppBaseController {
     }
   }
 
-  bool get hasHidePass => _hasHidePass;
-
-  set hasHidePass(bool value) {
-    _hasHidePass = value;
-    update();
-  }
 }
