@@ -14,7 +14,7 @@ class Logger {
 
   void printError(dynamic data){
     if(kDebugMode){
-      Get.log("===>Error $data",isError: true);
+      Get.log("===> Error $data",isError: true);
     }
   }
 }

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Navigation {
-  static final Navigation _instance = Navigation._internal();
+class NavigationService {
+  static final NavigationService _instance = NavigationService._internal();
 
-  static Navigation get instance => _instance;
+  static NavigationService get instance => _instance;
 
-  factory Navigation() => _instance;
+  factory NavigationService() => _instance;
 
-  Navigation._internal();
+  NavigationService._internal();
 
   Future<dynamic>? navigateToView(
     Widget route, {
