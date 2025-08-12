@@ -47,7 +47,7 @@ class AppScaffold extends StatelessWidget {
             if (isBusy ?? false)
               Positioned.fill(
                 child: Container(
-                  color: Colors.black.withOpacity(0.3),
+                  color: Colors.black.withValues(alpha: 0.3),
                   alignment: Alignment.center,
                   child: const LoaderWidget(),
                 ),
@@ -79,8 +79,8 @@ class AppScaffold extends StatelessWidget {
   Widget _body() {
     return Scaffold(
       appBar: appBar,
-      body: SafeArea(child: body),
-      backgroundColor: bgColor ?? Colors.white,
+      body: body,
+      backgroundColor: bgColor,
       bottomNavigationBar: bottomWidget,
       floatingActionButton: floatingAction,
       extendBodyBehindAppBar: extendBodyBehindAppBar ?? false,

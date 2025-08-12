@@ -1,6 +1,5 @@
 import 'package:basic_code_getx/app_const/app_config.dart';
 import 'package:basic_code_getx/base/app_base_controller.dart';
-import 'package:basic_code_getx/utils/logger.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
