@@ -27,7 +27,7 @@ android {
     namespace 'com.example.basic_code_getx'
 //    compileSdkVersion flutter.compileSdkVersion
 //    ndkVersion flutter.ndkVersion
-    compileSdk = 35
+    compileSdk = 36
     ndkVersion = "27.0.12077973"
     compileOptions {
         coreLibraryDesugaringEnabled = true
