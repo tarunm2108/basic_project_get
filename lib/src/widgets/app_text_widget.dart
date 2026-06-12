@@ -1,6 +1,8 @@
 import 'package:basic_code_getx/src/extensions/text_style_extension.dart';
 import 'package:flutter/material.dart';
 
+enum AppTextType { regular, heading1, heading2, body, caption, button }
+
 class AppTextWidget extends StatelessWidget {
   const AppTextWidget(
     this.text, {
@@ -14,7 +16,7 @@ class AppTextWidget extends StatelessWidget {
     this.locale,
     this.strutStyle,
     this.textScaler,
-  });
+  }) : _type = AppTextType.regular;
 
   final String text;
   final TextStyle? style;
@@ -26,9 +28,10 @@ class AppTextWidget extends StatelessWidget {
   final Locale? locale;
   final StrutStyle? strutStyle;
   final TextScaler? textScaler;
+  final AppTextType _type;
 
   /// Creates a [AppTextWidget] with `heading1Style`.
-  AppTextWidget.heading1(
+  const AppTextWidget.heading1(
     this.text, {
     super.key,
     this.textAlign,
@@ -39,10 +42,11 @@ class AppTextWidget extends StatelessWidget {
     this.locale,
     this.strutStyle,
     this.textScaler,
-  }) : style = TextStyle().heading1Style;
+  })  : style = null,
+        _type = AppTextType.heading1;
 
   /// Creates a [AppTextWidget] with `heading2Style`.
-  AppTextWidget.heading2(
+  const AppTextWidget.heading2(
     this.text, {
     super.key,
     this.textAlign,
@@ -53,10 +57,11 @@ class AppTextWidget extends StatelessWidget {
     this.locale,
     this.strutStyle,
     this.textScaler,
-  }) : style = TextStyle().heading2Style;
+  })  : style = null,
+        _type = AppTextType.heading2;
 
   /// Creates a [AppTextWidget] with `bodyStyle`.
-  AppTextWidget.body(
+  const AppTextWidget.body(
     this.text, {
     super.key,
     this.textAlign,
@@ -67,10 +72,11 @@ class AppTextWidget extends StatelessWidget {
     this.locale,
     this.strutStyle,
     this.textScaler,
-  }) : style = TextStyle().bodyStyle;
+  })  : style = null,
+        _type = AppTextType.body;
 
   /// Creates a [AppTextWidget] with `captionStyle`.
-  AppTextWidget.caption(
+  const AppTextWidget.caption(
     this.text, {
     super.key,
     this.textAlign,
@@ -81,10 +87,11 @@ class AppTextWidget extends StatelessWidget {
     this.locale,
     this.strutStyle,
     this.textScaler,
-  }) : style = TextStyle().captionStyle;
+  })  : style = null,
+        _type = AppTextType.caption;
 
   /// Creates a [AppTextWidget] with `buttonTextStyle`.
-  AppTextWidget.button(
+  const AppTextWidget.button(
     this.text, {
     super.key,
     this.textAlign,
@@ -95,13 +102,32 @@ class AppTextWidget extends StatelessWidget {
     this.locale,
     this.strutStyle,
     this.textScaler,
-  }) : style = TextStyle().buttonTextStyle;
+  })  : style = null,
+        _type = AppTextType.button;
+
+  TextStyle get _textStyle {
+    if (style != null) return style!;
+    switch (_type) {
+      case AppTextType.heading1:
+        return const TextStyle().heading1Style;
+      case AppTextType.heading2:
+        return const TextStyle().heading2Style;
+      case AppTextType.body:
+        return const TextStyle().bodyStyle;
+      case AppTextType.caption:
+        return const TextStyle().captionStyle;
+      case AppTextType.button:
+        return const TextStyle().buttonTextStyle;
+      case AppTextType.regular:
+        return const TextStyle().regular;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: style ?? TextStyle().regular,
+      style: _textStyle,
       textAlign: textAlign,
       overflow: overflow,
       maxLines: maxLines,

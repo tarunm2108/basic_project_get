@@ -21,6 +21,8 @@ class AppBaseController extends GetxController {
 
   bool get isBusy => _setBusy.value;
 
+  RxBool get isBusyRx => _setBusy;
+
   set setBusy(bool value) {
     _setBusy.value = value;
   }

@@ -9,7 +9,7 @@ class AppConfig {
 
   AppConfig._internal();
 
-  String get baseUrl => String.fromEnvironment('BASE_URL');
+  String get baseUrl => const String.fromEnvironment('BASE_URL');
 
-  String get apiKey => String.fromEnvironment('API_KEY');
+  String get apiKey => const String.fromEnvironment('API_KEY');
 }

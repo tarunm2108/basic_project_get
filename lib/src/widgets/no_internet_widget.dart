@@ -1,4 +1,3 @@
-import 'package:basic_code_getx/src/extensions/space_extension.dart';
 import 'package:basic_code_getx/src/widgets/app_button_widget.dart';
 import 'package:basic_code_getx/src/widgets/app_text_widget.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +16,13 @@ class NoInternetWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Icon(Icons.wifi_off, size: 80, color: Colors.grey),
-            16.toHeight,
-            AppTextWidget('No Internet Connection'),
-            8.toHeight,
-            AppTextWidget(
+            const SizedBox(height: 16),
+            const AppTextWidget('No Internet Connection'),
+            const SizedBox(height: 8),
+            const AppTextWidget(
               'Please check your network settings and try again.',
             ),
-            24.toHeight,
+            const SizedBox(height: 24),
             AppButtonWidget(onPressed: () => onRetry?.call(), title: "Retry")
           ],
         ),

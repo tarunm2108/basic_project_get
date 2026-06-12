@@ -9,7 +9,7 @@ class AppScaffold extends StatelessWidget {
   final Widget body;
   final Widget? floatingAction;
   final Widget? bottomWidget;
-  final bool? isBusy;
+  final RxBool? isBusy;
   final bool? resizeToAvoidBottomInset;
   final bool? extendBodyBehindAppBar;
   final bool? canPop;
@@ -32,6 +32,15 @@ class AppScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Widget stackContent = Stack(
+      children: [
+        _body(),
+        if (isBusy != null)
+          Obx(() => isBusy!.value ? const _LoaderOverlay() : const SizedBox.shrink()),
+        const _NetworkOverlay(),
+      ],
+    );
+
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
         if (!didPop) {
@@ -39,52 +48,67 @@ class AppScaffold extends StatelessWidget {
         }
       },
       canPop: canPop ?? true,
-      child: AbsorbPointer(
-        absorbing: isBusy ?? false,
-        child: Stack(
-          children: [
-            _body(),
-            if (isBusy ?? false)
-              Positioned.fill(
-                child: Container(
-                  color: Colors.black.withOpacity(0.3),
-                  alignment: Alignment.center,
-                  child: const LoaderWidget(),
-                ),
-              ),
-            Obx(() {
-              if (Get.isRegistered<NetworkController>() &&
-                  !(Get.find<NetworkController>().isConnected.value)) {
-                return Positioned.fill(
-                  child: Material(
-                    color: Colors.white,
-                    child: NoInternetWidget(
-                      onRetry: () async {
-                        if (await NetworkController.checkNetwork()) {
-                          Get.find<NetworkController>().isConnected.value = true;
-                        }
-                      },
-                    ),
-                  ),
-                );
-              }
-              return const SizedBox.shrink();
-            }),
-          ],
-        ),
-      ),
+      child: isBusy != null
+          ? Obx(() => AbsorbPointer(
+                absorbing: isBusy!.value,
+                child: stackContent,
+              ))
+          : stackContent,
     );
   }
 
   Widget _body() {
     return Scaffold(
       appBar: appBar,
-      body: SafeArea(child: body),
-      backgroundColor: bgColor ?? Colors.white,
+      body: body,
+      backgroundColor: bgColor,
       bottomNavigationBar: bottomWidget,
       floatingActionButton: floatingAction,
       extendBodyBehindAppBar: extendBodyBehindAppBar ?? false,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
     );
+  }
+}
+
+class _LoaderOverlay extends StatelessWidget {
+  const _LoaderOverlay();
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: Container(
+        color: Colors.black.withValues(alpha: 0.3),
+        alignment: Alignment.center,
+        child: const LoaderWidget(),
+      ),
+    );
+  }
+}
+
+class _NetworkOverlay extends StatelessWidget {
+  const _NetworkOverlay();
+
+  @override
+  Widget build(BuildContext context) {
+    if (!Get.isRegistered<NetworkController>()) {
+      return const SizedBox.shrink();
+    }
+    return Obx(() {
+      if (!Get.find<NetworkController>().isConnected.value) {
+        return Positioned.fill(
+          child: Material(
+            color: Colors.white,
+            child: NoInternetWidget(
+              onRetry: () async {
+                if (await NetworkController.checkNetwork()) {
+                  Get.find<NetworkController>().isConnected.value = true;
+                }
+              },
+            ),
+          ),
+        );
+      }
+      return const SizedBox.shrink();
+    });
   }
 }

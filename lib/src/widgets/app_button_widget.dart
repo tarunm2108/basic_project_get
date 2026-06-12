@@ -14,23 +14,28 @@ class AppButtonWidget extends StatelessWidget {
     super.key,
   });
 
+  static final _buttonStyle = ElevatedButton.styleFrom(
+    padding: const EdgeInsets.all(14),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+    ),
+  );
+
+  static final _textStyle = const TextStyle().bold.copyWith(
+        fontSize: 16,
+      );
+
   @override
   Widget build(BuildContext context) {
     return showLoader ?? false
         ? const LoaderWidget()
         : ElevatedButton(
             onPressed: onPressed,
-            style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                )),
+            style: _buttonStyle,
             child: Center(
               child: Text(
                 title,
-                style: const TextStyle().bold.copyWith(
-                      fontSize: 16,
-                    ),
+                style: _textStyle,
               ),
             ),
           );

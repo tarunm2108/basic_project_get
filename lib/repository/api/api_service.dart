@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:basic_code_getx/app_const/app_config.dart';
 import 'package:basic_code_getx/utils/logger.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
@@ -11,7 +12,6 @@ class ApiService {
 
   static ApiService get instance => _instance;
 
-  String baseUrl = "";
   final Dio _dio = Dio();
   static const connectionTimeOut = Duration(seconds: 10);
   static const receiveTimeOut = Duration(seconds: 30);
@@ -28,7 +28,7 @@ class ApiService {
         },
       );
     }
-    _dio.options.baseUrl = baseUrl;
+    _dio.options.baseUrl = AppConfig.instance.baseUrl;
     _dio.options.connectTimeout = connectionTimeOut;
     _dio.options.receiveTimeout = receiveTimeOut;
     _dio.interceptors.add(
