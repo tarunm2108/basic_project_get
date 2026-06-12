@@ -13,46 +13,44 @@ class LoginView extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return AppScaffold(
-        isBusy: controller.isBusy,
-        appBar: AppBarWidget(title: LangKey.login.tr),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              AppTextFieldWidget(
-                controller: controller.emailCtrl,
-                hintText: LangKey.email.tr,
-                inputType: TextInputType.emailAddress,
-                inputAction: TextInputAction.next,
-                node: controller.emailNode,
+    return AppScaffold(
+      isBusy: controller.isBusyRx,
+      appBar: AppBarWidget(title: LangKey.login.tr),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            AppTextFieldWidget(
+              controller: controller.emailCtrl,
+              hintText: LangKey.email.tr,
+              inputType: TextInputType.emailAddress,
+              inputAction: TextInputAction.next,
+              node: controller.emailNode,
+            ),
+            20.toHeight,
+            Obx(() => AppTextFieldWidget(
+              controller: controller.passCtrl,
+              hintText: LangKey.password.tr,
+              inputType: TextInputType.text,
+              inputAction: TextInputAction.done,
+              node: controller.passNode,
+              obscureText: controller.hasHidePass.value,
+              suffix: InkWell(
+                onTap: () => controller.hideShowPass(),
+                child: Icon(controller.hasHidePass.value
+                    ? Icons.visibility_off
+                    : Icons.visibility),
               ),
-              20.toHeight,
-              AppTextFieldWidget(
-                controller: controller.passCtrl,
-                hintText: LangKey.password.tr,
-                inputType: TextInputType.text,
-                inputAction: TextInputAction.done,
-                node: controller.passNode,
-                obscureText: controller.hasHidePass.value,
-                suffix: InkWell(
-                  onTap: () => controller.hideShowPass(),
-                  child: Icon(controller.hasHidePass.value
-                      ? Icons.visibility_off
-                      : Icons.visibility),
-                ),
-              ),
-              20.toHeight,
-              AppButtonWidget(
-                onPressed: () => controller.loginTap(),
-                title: LangKey.login.tr,
-                showLoader: controller.isBusy,
-              ),
-            ],
-          ),
+            )),
+            20.toHeight,
+            Obx(() => AppButtonWidget(
+              onPressed: () => controller.loginTap(),
+              title: LangKey.login.tr,
+              showLoader: controller.isBusy,
+            )),
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 }

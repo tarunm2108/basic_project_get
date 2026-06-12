@@ -13,14 +13,16 @@ class AppTextButtonWidget extends StatelessWidget {
     super.key,
   });
 
+  static final _buttonStyle = TextButton.styleFrom(
+    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    padding: EdgeInsets.zero,
+  );
+
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed,
-      style: TextButton.styleFrom(
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        padding: EdgeInsets.zero,
-      ),
+      style: _buttonStyle,
       child: Text(
         title,
         style: textStyle ?? const TextStyle().regular,
@@ -28,3 +30,4 @@ class AppTextButtonWidget extends StatelessWidget {
     );
   }
 }
+

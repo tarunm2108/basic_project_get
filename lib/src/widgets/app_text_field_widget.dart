@@ -38,16 +38,27 @@ class AppTextFieldWidget extends StatelessWidget {
     this.validator,
   });
 
+  static const _defaultBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(5)),
+    borderSide: BorderSide(width: 1, color: Colors.black),
+  );
+
+  static const _errorBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(5)),
+    borderSide: BorderSide(width: 1, color: Colors.red),
+  );
+
+  static final _defaultTextStyle = const TextStyle().regular.copyWith(
+        color: Colors.black,
+        fontSize: 18,
+      );
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
       onTap: onTap,
-      style: textStyle ??
-          const TextStyle().regular.copyWith(
-                color: Colors.black,
-                fontSize: 18,
-              ),
+      style: textStyle ?? _defaultTextStyle,
       keyboardType: inputType,
       focusNode: node,
       readOnly: readOnly ?? false,
@@ -57,29 +68,14 @@ class AppTextFieldWidget extends StatelessWidget {
       textCapitalization: textCapitalization ?? TextCapitalization.none,
       decoration: decoration ??
           InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-              borderSide: const BorderSide(width: 1, color: Colors.black),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-              borderSide: const BorderSide(width: 1, color: Colors.black),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-              borderSide: const BorderSide(width: 1, color: Colors.black),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-              borderSide: const BorderSide(width: 1, color: Colors.red),
-            ),
+            border: _defaultBorder,
+            enabledBorder: _defaultBorder,
+            focusedBorder: _defaultBorder,
+            errorBorder: _errorBorder,
             isDense: true,
             hintText: hintText,
             contentPadding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
-            hintStyle: const TextStyle().regular.copyWith(
-                  color: Colors.black,
-                  fontSize: 18,
-                ),
+            hintStyle: _defaultTextStyle,
             suffixIcon: suffix,
             prefixIcon: prefix,
           ),

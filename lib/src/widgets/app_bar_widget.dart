@@ -15,6 +15,10 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     super.key,
   });
 
+  static final _titleTextStyle = const TextStyle().regular.copyWith(
+        fontSize: 21,
+      );
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -23,9 +27,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       titleSpacing: 0,
       title: Text(
         title ?? '',
-        style: const TextStyle().regular.copyWith(
-              fontSize: 21,
-            ),
+        style: _titleTextStyle,
       ),
       actions: actions,
       centerTitle: centerTitle ?? true,
