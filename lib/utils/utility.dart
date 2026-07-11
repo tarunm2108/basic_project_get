@@ -14,14 +14,13 @@ class Utility {
   }
 
   static void showToast({required String? msg}) {
-    if (msg?.isNotEmpty ?? false) {
-      Get.showSnackbar(
-        GetSnackBar(
-          message: msg,
-          duration: const Duration(seconds: 3),
-        ),
-      );
-    }
+    if (msg == null || msg.isEmpty) return;
+    Get.showSnackbar(
+      GetSnackBar(
+        message: msg,
+        duration: const Duration(seconds: 3),
+      ),
+    );
   }
 
   static Future<bool> checkPermission(Permission permission) async {
@@ -77,7 +76,7 @@ class Utility {
         exit(0);
       }
     } catch (e) {
-      Logger.instance.printError('____ $e');
+      Logger.instance.logError(' $e');
     }
   }
 

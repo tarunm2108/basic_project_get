@@ -1,6 +1,7 @@
 import 'package:basic_code_getx/src/extensions/text_style_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppTextFieldWidget extends StatelessWidget {
   final TextStyle? textStyle;
@@ -38,19 +39,23 @@ class AppTextFieldWidget extends StatelessWidget {
     this.validator,
   });
 
-  static const _defaultBorder = OutlineInputBorder(
+  static final InputBorder enableBorder = const OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(5)),
     borderSide: BorderSide(width: 1, color: Colors.black),
+  ).copyWith(
+    borderRadius: BorderRadius.all(Radius.circular(5.r)),
   );
 
-  static const _errorBorder = OutlineInputBorder(
+  static final InputBorder errorBorder = const OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(5)),
     borderSide: BorderSide(width: 1, color: Colors.red),
+  ).copyWith(
+    borderRadius: BorderRadius.all(Radius.circular(5.r)),
   );
 
   static final _defaultTextStyle = const TextStyle().regular.copyWith(
         color: Colors.black,
-        fontSize: 18,
+        fontSize: 18.sp,
       );
 
   @override
@@ -68,13 +73,13 @@ class AppTextFieldWidget extends StatelessWidget {
       textCapitalization: textCapitalization ?? TextCapitalization.none,
       decoration: decoration ??
           InputDecoration(
-            border: _defaultBorder,
-            enabledBorder: _defaultBorder,
-            focusedBorder: _defaultBorder,
-            errorBorder: _errorBorder,
+            border: enableBorder,
+            enabledBorder: enableBorder,
+            focusedBorder: enableBorder,
+            errorBorder: errorBorder,
             isDense: true,
             hintText: hintText,
-            contentPadding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+            contentPadding: EdgeInsets.fromLTRB(18.w, 18.h, 18.w, 18.h),
             hintStyle: _defaultTextStyle,
             suffixIcon: suffix,
             prefixIcon: prefix,

@@ -1,6 +1,7 @@
 import 'package:basic_code_getx/src/extensions/text_style_extension.dart';
 import 'package:basic_code_getx/src/widgets/loader_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppButtonWidget extends StatelessWidget {
   final VoidCallback onPressed;
@@ -15,9 +16,9 @@ class AppButtonWidget extends StatelessWidget {
   });
 
   static final _buttonStyle = ElevatedButton.styleFrom(
-    padding: const EdgeInsets.all(14),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(10)),
+    padding: EdgeInsets.all(14.w),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10.r)),
     ),
   );
 

@@ -6,13 +6,13 @@ class Logger {
   Logger._internal();
   factory Logger() => instance;
 
-  void printLog(dynamic data){
+  void logInfo(dynamic data){
     if(kDebugMode){
       Get.log("===> $data");
     }
   }
 
-  void printError(dynamic data){
+  void logError(dynamic data){
     if(kDebugMode){
       Get.log("===> Error $data",isError: true);
     }

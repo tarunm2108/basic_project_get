@@ -1,0 +1,35 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Dev",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "toolArgs": [
+                "--dart-define=BASE_URL=https://dev.api.example.com",
+                "--dart-define=API_KEY=dev_key_123"
+            ]
+        },
+        {
+            "name": "Staging",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "toolArgs": [
+                "--dart-define=BASE_URL=https://staging.api.example.com",
+                "--dart-define=API_KEY=staging_key_456"
+            ]
+        },
+        {
+            "name": "Production",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "toolArgs": [
+                "--dart-define=BASE_URL=https://api.example.com",
+                "--dart-define=API_KEY=prod_key_789"
+            ]
+        }
+    ]
+}

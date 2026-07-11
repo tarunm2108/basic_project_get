@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
+import 'package:basic_code_getx/utils/logger.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 const String channelName = 'Demo Test';
@@ -58,7 +58,7 @@ class NotificationService {
       NotificationResponse notificationResponse) async {
     final String? payload = notificationResponse.payload;
     if (notificationResponse.payload != null) {
-      debugPrint('notification payload: $payload');
+      Logger.instance.logInfo('notification payload: $payload');
     }
   }
 

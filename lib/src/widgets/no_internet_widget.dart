@@ -1,6 +1,10 @@
+import 'package:basic_code_getx/src/extensions/space_extension.dart';
 import 'package:basic_code_getx/src/widgets/app_button_widget.dart';
 import 'package:basic_code_getx/src/widgets/app_text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:basic_code_getx/app_locale/locale_string/lang_key.dart';
 
 class NoInternetWidget extends StatelessWidget {
   final VoidCallback? onRetry;
@@ -11,19 +15,22 @@ class NoInternetWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(24.w),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             const Icon(Icons.wifi_off, size: 80, color: Colors.grey),
-            const SizedBox(height: 16),
-            const AppTextWidget('No Internet Connection'),
-            const SizedBox(height: 8),
-            const AppTextWidget(
-              'Please check your network settings and try again.',
+            16.toHeight,
+            AppTextWidget(LangKey.noInternetConnection.tr),
+            8.toHeight,
+            AppTextWidget(
+              LangKey.pleaseCheckYourNetwork.tr,
             ),
-            const SizedBox(height: 24),
-            AppButtonWidget(onPressed: () => onRetry?.call(), title: "Retry")
+            24.toHeight,
+            AppButtonWidget(
+              onPressed: () => onRetry?.call(),
+              title: LangKey.retry.tr,
+            )
           ],
         ),
       ),
