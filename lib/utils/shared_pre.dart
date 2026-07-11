@@ -53,7 +53,7 @@ class SharedPre {
   //     }
   //     return null;
   //   } catch (e) {
-  //     Logger.instance.printError("getLoginUser $e");
+  //     Logger.instance.logError("getLoginUser $e");
   //     return null;
   //   }
   // }

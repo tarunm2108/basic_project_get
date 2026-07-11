@@ -20,7 +20,7 @@ class NetworkController extends GetxController {
     });
 
     networkListener = InternetConnectionChecker.instance.onStatusChange.listen((status) {
-      Logger.instance.printLog("Network status changed: $status");
+      Logger.instance.logInfo("Network status changed: $status");
       isConnected.value = status == InternetConnectionStatus.connected;
     });
   }

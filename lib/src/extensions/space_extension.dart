@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 extension SpaceExtension on num {
-  SizedBox get toSpace => SizedBox(height: toDouble(), width: toDouble());
+  SizedBox get toSpace => SizedBox(height: toDouble().h, width: toDouble().w);
 
-  SizedBox get toHeight => SizedBox(height: toDouble());
+  SizedBox get toHeight => SizedBox(height: toDouble().h);
 
-  SizedBox get toWidth => SizedBox(width: toDouble());
+  SizedBox get toWidth => SizedBox(width: toDouble().w);
 }

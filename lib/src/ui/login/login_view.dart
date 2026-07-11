@@ -6,6 +6,7 @@ import 'package:basic_code_getx/src/widgets/app_button_widget.dart';
 import 'package:basic_code_getx/src/widgets/app_scaffold.dart';
 import 'package:basic_code_getx/src/widgets/app_text_field_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -15,9 +16,33 @@ class LoginView extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return AppScaffold(
       isBusy: controller.isBusyRx,
-      appBar: AppBarWidget(title: LangKey.login.tr),
+      appBar: AppBarWidget(
+        title: LangKey.login.tr,
+        actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.language),
+            onSelected: (String languageCode) {
+              Get.updateLocale(Locale(languageCode));
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'en',
+                child: Text('English'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'es',
+                child: Text('Spanish'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'hi',
+                child: Text('Hindi'),
+              ),
+            ],
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16.w),
         child: Column(
           children: [
             AppTextFieldWidget(
@@ -29,25 +54,25 @@ class LoginView extends GetView<LoginController> {
             ),
             20.toHeight,
             Obx(() => AppTextFieldWidget(
-              controller: controller.passCtrl,
-              hintText: LangKey.password.tr,
-              inputType: TextInputType.text,
-              inputAction: TextInputAction.done,
-              node: controller.passNode,
-              obscureText: controller.hasHidePass.value,
-              suffix: InkWell(
-                onTap: () => controller.hideShowPass(),
-                child: Icon(controller.hasHidePass.value
-                    ? Icons.visibility_off
-                    : Icons.visibility),
-              ),
-            )),
+                  controller: controller.passCtrl,
+                  hintText: LangKey.password.tr,
+                  inputType: TextInputType.text,
+                  inputAction: TextInputAction.done,
+                  node: controller.passNode,
+                  obscureText: controller.hasHidePass.value,
+                  suffix: InkWell(
+                    onTap: () => controller.hideShowPass(),
+                    child: Icon(controller.hasHidePass.value
+                        ? Icons.visibility_off
+                        : Icons.visibility),
+                  ),
+                )),
             20.toHeight,
             Obx(() => AppButtonWidget(
-              onPressed: () => controller.loginTap(),
-              title: LangKey.login.tr,
-              showLoader: controller.isBusy,
-            )),
+                  onPressed: () => controller.loginTap(),
+                  title: LangKey.login.tr,
+                  showLoader: controller.isBusy,
+                )),
           ],
         ),
       ),
